@@ -1,13 +1,10 @@
-# Polymer App Toolbox - Drawer Template
+# Often - Progressive Web App Version
 
-This template is a starting point for building apps using a drawer-based
-layout.  The layout is provided by `app-layout` elements.
+This app is a habit building and tracking web app built with Firebase and Polymer. The goal is to build a web app that is as progressive as possible, even passing for a native app when advanced features such as Service Workers are available.
 
-This template, along with the `polymer-cli` toolchain, also demonstrates use
-of the "PRPL pattern" This pattern allows fast first delivery and interaction with
-the content at the initial route requested by the user, along with fast subsequent
-navigation by pre-caching the remaining components required by the app and
-progressively loading them on-demand as the user navigates through the app.
+I'm building this primarily for myself but it will be publicly usable as a demonstration for others. If it were to get crazy popular I'll have to figure out what I'd do. :)
+
+For performance, I try to stick to the "PRPL pattern". This pattern allows fast first delivery and interaction with the content at the initial route requested by the user, along with fast subsequent navigation by pre-caching the remaining components required by the app and progressively loading them on-demand as the user navigates through the app.
 
 The PRPL pattern, in a nutshell:
 
@@ -71,5 +68,3 @@ of the application.  Each new demand-loaded fragment should be added to the
 list of `fragments` in the included `polymer.json` file.  This will ensure
 those components and their dependencies are added to the list of pre-cached
 components (and will have bundles created in the fallback `bundled` build).
-
-
