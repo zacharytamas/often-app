@@ -10,6 +10,8 @@
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 
 <link rel="import" href="../bower_components/polymerfire/firebase-app.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-auth.html">
+
 <dom-module id="my-app">
 
   <template>
@@ -32,6 +34,10 @@
       database-url="https://zt-often.firebaseio.com"
       api-key="AIzaSyD3TZWaYzjRZBRFajQhM-JcE1GGcJJfc8g">
     </firebase-app>
+    <firebase-auth id="fbAuth"
+      user="{{user}}" provider="google"
+      on-error="handleError">
+    </firebase-auth>
 
     <app-location route="{{route}}"></app-location>
     <app-route
@@ -76,6 +82,12 @@
       observers: [
         '_routePageChanged(routeData.page)'
       ],
+
+      ready: function() {
+        if (!this.$.fbAuth.signedIn) {
+          console.log('You need to sign in');
+        }
+      },
 
       _routePageChanged: function(page) {
         this.page = page || 'view1';
