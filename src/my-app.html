@@ -30,11 +30,13 @@
       }
     </style>
 
-    <firebase-app auth-domain="zt-often.firebaseapp.com"
+    <firebase-app app-name="often"
+      auth-domain="zt-often.firebaseapp.com"
       database-url="https://zt-often.firebaseio.com"
       api-key="AIzaSyD3TZWaYzjRZBRFajQhM-JcE1GGcJJfc8g">
     </firebase-app>
     <firebase-auth id="fbAuth"
+      app-name="often"
       user="{{user}}" provider="google"
       on-error="handleError">
     </firebase-auth>
