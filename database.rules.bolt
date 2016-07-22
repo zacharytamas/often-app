@@ -1,5 +1,54 @@
 
 path / {
-  read() { auth != null }
-  write() { auth != null }
+
+}
+
+////////////////////////////////
+// User
+////////////////////////////////
+
+type User {
+  emailAddress: String
+}
+
+isLoggedIn() { auth != null }
+isCurrentUser(uid) { auth != null && auth.uid == uid }
+
+path /users/{user_id} is User {
+  write() { isCurrentUser(user_id) }
+  read()  { isCurrentUser(user_id) }
+}
+
+
+////////////////////////////////
+// HabitSuggestion
+////////////////////////////////
+
+type HabitSuggestion {
+  name: String,
+  count: Number
+}
+
+path /habitSuggestions/{id} is HabitSuggestion {
+  create() { isLoggedIn() }
+  update() { isLoggedIn() }
+  delete() { false }  // no one can delete
+}
+
+////////////////////////////////
+// Habit
+////////////////////////////////
+
+type Habit {
+  name: String,
+  streak: Number,
+  longestStreak: Number,
+  completions: Object,
+  schedule: Object
+}
+
+path /habit/{user_id}/{id} is Habit {
+  validate() {}
+  write() { isCurrentUser(user_id) }
+  read()  { isCurrentUser(user_id) }
 }
