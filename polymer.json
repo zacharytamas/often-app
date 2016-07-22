@@ -1,8 +1,7 @@
 {
   "entrypoint": "index.html",
-  "shell": "src/my-app.html",
+  "shell": "src/often-app.html",
   "fragments": [
-    "src/my-view1.html",
-    "src/o-login-screen.html"
+    "src/auth/auth-context-view.html"
   ]
 }
