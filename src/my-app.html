@@ -9,6 +9,7 @@
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 
+<link rel="import" href="../bower_components/polymerfire/firebase-app.html">
 <dom-module id="my-app">
 
   <template>
@@ -26,6 +27,11 @@
         color: #fff;
       }
     </style>
+
+    <firebase-app auth-domain="zt-often.firebaseapp.com"
+      database-url="https://zt-often.firebaseio.com"
+      api-key="AIzaSyD3TZWaYzjRZBRFajQhM-JcE1GGcJJfc8g">
+    </firebase-app>
 
     <app-location route="{{route}}"></app-location>
     <app-route
