@@ -12,56 +12,68 @@
 <link rel="import" href="../bower_components/polymerfire/firebase-app.html">
 <link rel="import" href="../bower_components/polymerfire/firebase-auth.html">
 
+<link rel="import" href="splash-context-view.html">
+
 <dom-module id="my-app">
 
   <template>
 
     <style>
-
       :host {
         display: block;
         --app-primary-color: #4285f4;
         --app-secondary-color: black;
+        height: 100vh;
       }
 
       app-header {
         background-color: var(--app-primary-color);
         color: #fff;
       }
+
+      app-header-layout {
+        height: 100vh;
+        @apply(--layout-vertical);
+      }
+
+      iron-pages {
+        @apply(--layout-flex);
+      }
     </style>
 
-    <firebase-app app-name="often"
+    <firebase-app name="often"
       auth-domain="zt-often.firebaseapp.com"
       database-url="https://zt-often.firebaseio.com"
       api-key="AIzaSyD3TZWaYzjRZBRFajQhM-JcE1GGcJJfc8g">
     </firebase-app>
-    <firebase-auth id="fbAuth"
-      app-name="often"
-      user="{{user}}" provider="google"
+    <firebase-auth id="fbAuth" app-name="often"
+      user="{{user}}" signed-in="{{signedIn}}"
       on-error="handleError">
     </firebase-auth>
 
     <app-location route="{{route}}"></app-location>
-    <app-route
-        route="{{route}}"
-        pattern="/:page"
-        data="{{routeData}}"
-        tail="{{subroute}}"></app-route>
+    <app-route route="{{route}}"
+      pattern="/:context"
+      data="{{routeData}}"
+      tail="{{subroute}}"></app-route>
 
-    <!-- Main content -->
-    <app-header-layout>
+      <iron-pages role="main" selected="[[context]]" attr-for-selected="name">
+        <splash-context-view name="splash"></splash-context-view>
+        <auth-context-view name="auth"></auth-context-view>
+        <main-context-view name="main"></main-context-view>
+      </iron-pages>
 
-      <app-header condenses reveals effects="waterfall">
+    <!-- <app-header-layout fullbleed>
+
+      <app-header reveals effects="waterfall">
         <app-toolbar>
           <div title>My App</div>
         </app-toolbar>
       </app-header>
 
-      <iron-pages role="main" selected="[[page]]" attr-for-selected="name">
-        <my-view1 name="view1"></my-view1>
-      </iron-pages>
 
-    </app-header-layout>
+
+    </app-header-layout> -->
 
   </template>
 
@@ -73,32 +85,62 @@
 
       properties: {
 
-        page: {
+        context: {
           type: String,
+          value: 'splash',
           reflectToAttribute: true,
-          observer: '_pageChanged'
+          observer: '_contextChanged'
         },
+
+        signedIn: {
+          type: Boolean,
+          observer: '_signedInChanged'
+        }
 
       },
 
       observers: [
-        '_routePageChanged(routeData.page)'
+        '_routeModeChanged(routeData.context)'
       ],
 
-      ready: function() {
-        if (!this.$.fbAuth.signedIn) {
-          console.log('You need to sign in');
+      _signedInChanged: function(signedIn) {
+        this.context = (signedIn) ? 'main' : 'auth';
+      },
+
+      _login: function(event) {
+        this.$.fbAuth.signInWithPopup();
+      },
+
+      _routeModeChanged: function(context) {
+        if (context) this.context = context;
+      },
+
+      _contextChanged: function(context) {
+
+        console.info("ContextChanged: ", context);
+
+        var element;
+
+        // For performance we only load these when they are needed. There are
+        // cases where you might not need them all. For example, if it's your
+        // first time launching the app and you haven't even logged in yet,
+        // there is no need to waste time downloading the main app interface
+        // and setting it up in memory until it's clear you're actually going
+        // to make it there. Conversely, if you're already logged in there is
+        // no need to load the login/register elements.
+
+        switch (context) {
+          case 'auth':
+            element = 'auth/auth-context-view';
+            break;
+          case 'main':
+            element = 'main-context-view';
+          default: break;
         }
-      },
 
-      _routePageChanged: function(page) {
-        this.page = page || 'view1';
-      },
-
-      _pageChanged: function(page) {
-        // load page import on demand.
-        this.importHref(
-          this.resolveUrl('my-' + page + '.html'), null, null, true);
+        if (element) {
+          this.importHref(this.resolveUrl(element + '.html'), null, null, true);
+        }
       }
 
     });
