@@ -1,5 +1,13 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
+<link rel="import" href="../../bower_components/iron-form/iron-form.html">
+
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="../../bower_components/paper-tabs/paper-tab.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/gold-email-input/gold-email-input.html">
+
 <dom-module id="auth-context-view">
   <template>
     <style>
@@ -8,13 +16,49 @@
       }
     </style>
 
-    Welcome to the auth context view.
+    <paper-tabs selected="{{action}}" attr-for-selected="name">
+      <paper-tab name="register">Register</paper-tab>
+      <paper-tab name="login">Login</paper-tab>
+    </paper-tabs>
+
+    <form is="iron-form" id="form">
+      <gold-email-input label="Email address" required
+        auto-validate="[[_autoValidate]]"
+        value="{{emailAddress}}"></gold-email-input>
+      <paper-input label="Password" type="password" required
+        auto-validate="[[_autoValidate]]"
+        value="{{password}}"></paper-input>
+
+      <paper-button raised on-tap="_takeAction">[[_buttonLabelFor(action)]]</paper-button>
+    </form>
 
   </template>
   <script>
     Polymer({
       is: 'auth-context-view',
 
+      properties: {
+        route: {
+          type: String
+        },
+        action: {
+          type: String,
+          value: 'register'
+        }
+      },
+
+      _takeAction: function() {
+        if (this.$.form.validate()) {
+          this.fire('auth-' + this.action,
+            {emailAddress: this.emailAddress, password: this.password});
+        } else {
+          this._autoValidate = true;
+        }
+      },
+
+      _buttonLabelFor: function(action) {
+        return (action == 'login') ? 'Login' : 'Register';
+      }
     });
   </script>
 </dom-module>

@@ -1,0 +1,40 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
+<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+
+<dom-module id="main-context-view">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      app-header {
+        background-color: var(--app-primary-color);
+        color: #fff;
+      }
+    </style>
+
+    <app-header-layout fullbleed>
+
+      <app-header reveals effects="waterfall">
+        <app-toolbar>
+          <div title>Today</div>
+        </app-toolbar>
+      </app-header>
+
+      Welcome.
+
+    </app-header-layout>
+
+  </template>
+  <script>
+    Polymer({
+      is: 'main-context-view',
+
+    });
+  </script>
+</dom-module>

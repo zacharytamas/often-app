@@ -2,10 +2,6 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
-<link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
-<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
-<link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
-<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 
@@ -24,11 +20,6 @@
         --app-primary-color: #4285f4;
         --app-secondary-color: black;
         height: 100vh;
-      }
-
-      app-header {
-        background-color: var(--app-primary-color);
-        color: #fff;
       }
 
       app-header-layout {
@@ -53,27 +44,18 @@
 
     <app-location route="{{route}}"></app-location>
     <app-route route="{{route}}"
-      pattern="/:context"
-      data="{{routeData}}"
-      tail="{{subroute}}"></app-route>
+      pattern="/:context" data="{{routeData}}" tail="{{subroute}}"></app-route>
 
-      <iron-pages role="main" selected="[[context]]" attr-for-selected="name">
-        <splash-context-view name="splash"></splash-context-view>
-        <auth-context-view name="auth"></auth-context-view>
-        <main-context-view name="main"></main-context-view>
-      </iron-pages>
+    <iron-pages role="main" selected="[[context]]" attr-for-selected="name">
 
-    <!-- <app-header-layout fullbleed>
+      <splash-context-view name="splash"></splash-context-view>
 
-      <app-header reveals effects="waterfall">
-        <app-toolbar>
-          <div title>My App</div>
-        </app-toolbar>
-      </app-header>
+      <auth-context-view name="auth"
+        on-auth-register="_registerUser"
+        on-auth-login="_loginUser"></auth-context-view>
 
-
-
-    </app-header-layout> -->
+      <main-context-view name="main" route="[[subroute]]"></main-context-view>
+    </iron-pages>
 
   </template>
 
@@ -107,8 +89,21 @@
         this.context = (signedIn) ? 'main' : 'auth';
       },
 
-      _login: function(event) {
-        this.$.fbAuth.signInWithPopup();
+      _registerUser: function(event) {
+        var cred = event.detail;
+
+        this.$.fbAuth.createUserWithEmailAndPassword(cred.emailAddress,
+          cred.password).catch(function(error) {
+            // TODO Pass any errors back to the auth-context-view for showing.
+          });
+      },
+
+      _loginUser: function(event) {
+        var cred = event.detail;
+        this.$.fbAuth.signInWithEmailAndPassword(cred.emailAddress,
+          cred.password).catch(function(error) {
+            // TODO Pass any errors back to the auth-context-view for showing.
+        });
       },
 
       _routeModeChanged: function(context) {

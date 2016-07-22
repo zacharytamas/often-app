@@ -2,6 +2,7 @@
   "entrypoint": "index.html",
   "shell": "src/often-app.html",
   "fragments": [
-    "src/auth/auth-context-view.html"
+    "src/auth/auth-context-view.html",
+    "src/main-context-view.html"
   ]
 }
