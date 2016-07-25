@@ -39,7 +39,7 @@
     </firebase-app>
     <firebase-auth id="fbAuth" app-name="often"
       user="{{user}}" signed-in="{{signedIn}}"
-      on-error="handleError">
+      on-error="_handleError">
     </firebase-auth>
 
     <app-location route="{{route}}"></app-location>
@@ -54,7 +54,8 @@
         on-auth-register="_registerUser"
         on-auth-login="_loginUser"></auth-context-view>
 
-      <main-context-view name="main" route="[[subroute]]"></main-context-view>
+      <main-context-view name="main"
+        route="[[subroute]]"></main-context-view>
     </iron-pages>
 
   </template>
