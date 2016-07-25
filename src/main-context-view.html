@@ -6,6 +6,7 @@
 <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
 
 <link rel="import" href="data/habit-service.html">
+<link rel="import" href="habits/habit-list.html">
 
 <dom-module id="main-context-view">
   <template>
@@ -31,11 +32,7 @@
         </app-toolbar>
       </app-header>
 
-      Welcome.
-
-      <template is="dom-repeat" items="[[habits]]" as="habit">
-        <div>[[habit.name]]</div>
-      </template>
+      <habit-list habits="{{habits}}"></habit-list>
 
     </app-header-layout>
 

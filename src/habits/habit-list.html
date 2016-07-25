@@ -1,0 +1,30 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<link rel="import" href="habit-list-item.html">
+
+<dom-module id="habit-list">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+
+    <template is="dom-repeat" items="[[habits]]" as="habit">
+      <habit-list-item habit="{{habit}}"></habit-list-item>
+    </template>
+
+  </template>
+  <script>
+    Polymer({
+      is: 'habit-list',
+
+      properties: {
+        habits: {
+          type: Array,
+          notify: true
+        }
+      }
+    });
+  </script>
+</dom-module>

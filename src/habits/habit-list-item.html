@@ -1,0 +1,57 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../../bower_components/paper-item/paper-icon-item.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item-body.html">
+
+<dom-module id="habit-list-item">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      paper-icon-item {
+        background-color: white;
+        border-bottom: 1px rgba(0, 0, 0, .1) solid;
+        min-height: 72px;
+      }
+
+      .streak-badge {
+        width: 40px;
+
+        padding: 8px 0;
+        border-radius: 20px;
+        text-align: center;
+        font-size: 14px;
+        color: white;
+        font-weight: bold;
+      }
+
+      .streak-badge.green {
+        background: green;
+      }
+
+    </style>
+
+    <paper-icon-item>
+      <div class="streak-badge green" item-icon>[[habit.streak]]</div>
+      <paper-item-body two-line>
+        <div>[[habit.name]]</div>
+        <div secondary>Last completed yesterday</div>
+      </paper-item-body>
+    </paper-icon-item>
+
+  </template>
+  <script>
+    Polymer({
+      is: 'habit-list-item',
+
+      properties: {
+        habit: {
+          type: Object
+        }
+      }
+
+    });
+  </script>
+</dom-module>
