@@ -1,0 +1,63 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../../bower_components/polymerfire/firebase-query.html">
+<link rel="import" href="../../bower_components/polymerfire/firebase-document.html">
+<!-- <link rel="import" href="../../bower_components/app-storage/app-indexeddb-mirror/app-indexeddb-mirror.html"> -->
+
+<dom-module id="habit-service">
+  <template>
+
+    <firebase-query id="allHabitsQuery" app-name="often"
+      path="/habits/[[user.uid]]" data="{{userHabits}}">
+    </firebase-query>
+
+    <!-- TODO Add this for offline support.
+         There's a bug right now that makes this hard.
+         https://github.com/PolymerElements/app-storage/pull/45 -->
+    <!-- <app-indexeddb-mirror
+      session="[[user.uid]]"
+      key="habits"
+      data="{{_userHabits}}"
+      persisted-data="{{userHabits}}">
+    </app-indexeddb-mirror> -->
+
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'habit-service',
+
+      properties: {
+        app: {
+          type: Object,
+          value: function() { return window.App; }
+        },
+
+        userHabits: {
+          type: Array,
+          notify: true
+        }
+      },
+
+      ready: function() {
+        this.user = this.app.user;
+      },
+
+      _habitsRoot: function(user) {
+        return '/habits/' + user.uid;
+      },
+
+      createHabit: function(habit) {
+        var doc = document.createElement('firebase-document');
+        doc.appName = 'often';
+        doc.data = habit;
+        doc.save(this._habitsRoot(this.user));
+      }
+
+    });
+
+  }());
+  </script>
+</dom-module>

@@ -86,6 +86,10 @@
         '_routeModeChanged(routeData.context)'
       ],
 
+      attached: function() {
+        window.App = this;
+      },
+
       _signedInChanged: function(signedIn) {
         this.context = (signedIn) ? 'main' : 'auth';
       },
