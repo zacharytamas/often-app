@@ -1,8 +1,4 @@
 
-path / {
-
-}
-
 ////////////////////////////////
 // User
 ////////////////////////////////
@@ -47,8 +43,9 @@ type Habit {
   schedule: Object
 }
 
-path /habit/{user_id}/{id} is Habit {
-  validate() {}
+path /habits/{user_id} {
   write() { isCurrentUser(user_id) }
   read()  { isCurrentUser(user_id) }
 }
+
+path /habits/{user_id}/{id} is Habit;
